@@ -14,6 +14,8 @@ public:
     KCamera                 m_Camera;
     KTriggerCollider*       m_Trigger_Home;
     KTriggerCollider*       m_Trigger_Combat;
+    bool                    m_bCombat=false;
+    KUIModel*               m_Fade;
 
 public:
     std::shared_ptr<KUIModelComposite> m_Menu;

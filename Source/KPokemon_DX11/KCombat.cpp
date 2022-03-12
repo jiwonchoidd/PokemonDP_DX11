@@ -1,5 +1,4 @@
 #include "KCombat.h"
-#include "KCombatCalculator.h"
 #include "KUI.h"
 //적 포켓몬을 담당함
 //플레이어 포켓몬 레벨에 맞는 적당한 
@@ -24,7 +23,7 @@ bool KCombat::Init(ID3D11DeviceContext* context, KPlayer2D* player, int id)
 	PokemonInfo enemyinfo;
 	enemyinfo.hp = 100;
 	enemyinfo.mon_level = randstep(1,(m_mypoke.get()->m_pinfo->mon_level)+2);
-	leveltosize(enemyinfo.mon_level, enemyinfo.mon_weight, enemyinfo.mon_height);
+	LevelToSize(enemyinfo.mon_level, enemyinfo.mon_weight, enemyinfo.mon_height);
 	switch (id)
 	{
 	case 0:
@@ -72,10 +71,6 @@ bool KCombat::Release()
 	m_mypoke.get()->Release();
 	m_enemypoke.get()->Release();
 	return true;
-}
-
-void KCombat::ObjectOverlap(KCollider* pObj, DWORD dwState)
-{
 }
 
 KCombat::KCombat()

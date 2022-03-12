@@ -7,10 +7,12 @@
 #include "KObjObject.h"
 #include "KState.h"
 #include "KSoundManager.h"
+#include "KSpriteEffect.h"
 class KScene_Combat : public KScene
 {
 public:
-    std::wstring            m_text_dialog;
+    std::shared_ptr<KSpriteEffect> m_EffectPlayer;
+    std::wstring                   m_text_dialog;
 public:
     bool    Load(std::wstring file) override;
 public:

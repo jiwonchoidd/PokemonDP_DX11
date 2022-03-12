@@ -13,7 +13,13 @@ public:
     bool Frame();
     bool Render(ID3D11DeviceContext* pContext);
     bool Release();
-    virtual void	ObjectOverlap(KCollider* pObj, DWORD dwState);
+    //레벨에 따라 랜덤한 사이즈를 반환함
+    void LevelToSize(int level_value, float& weight, float& height)
+    {
+        //kg, m
+        weight = randstep(0.1 * level_value, 0.9 * level_value);
+        height = randstep(0.15, 2);
+    }
 public:
     KCombat();
     ~KCombat();

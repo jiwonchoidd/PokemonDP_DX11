@@ -2,6 +2,7 @@
 #include "KSceneManager.h"
 #include "KUI.h"
 #include "KWrite.h"
+#include "ImGuiManager.h"
 void KScene_Game_1::ActiveMenu()
 {
 	g_SceneManager.m_Player->m_bMove = !g_SceneManager.m_Player->m_bMove;
@@ -196,6 +197,7 @@ bool KScene_Game_1::Load(std::wstring file)
 	m_UIObj.push_back(std::shared_ptr<KObject>(compositeobj));
 	KUIModel* fadeimg = g_UIModelManager.GetPtr(L"fade_background")->Clone();
 	m_UIObj.push_back(std::shared_ptr<KObject>(fadeimg));
+	m_Fade = fadeimg;
 
 	//진행되는 음원이 해당 음원이 아니라면 바꿔준다.
 	if (g_SceneManager.m_BGM->m_name != L"Twinleaf Town (Day)")
@@ -213,11 +215,11 @@ bool KScene_Game_1::Load(std::wstring file)
 	//OBJ 파일 맵
 	KMatrix s, r, t;
 	D3DKMatrixIdentity(&s);
+	D3DKMatrixIdentity(&r);
 	D3DKMatrixScaling(&s, 2.0f, 2.0f, 1.5f);
 	for (int i = 0; i < 3; i++)
 	{
 		std::shared_ptr<KObjObject> map3D_1 = std::make_shared<KObjObject>();
-		D3DKMatrixIdentity(&r);
 		D3DKMatrixIdentity(&t);
 		if (!map3D_1.get()->Init(m_pContext,
 			L"../../data/shader/VS_0.txt",
@@ -230,7 +232,6 @@ bool KScene_Game_1::Load(std::wstring file)
 		if (i == 0)
 		{
 			D3DKMatrixTranslation(&t, 0.0f, 0.0f, 0.0f);
-			D3DKMatrixRotationZ(&r, 0.0f);
 		}
 		if (i == 1)
 		{
@@ -248,8 +249,9 @@ bool KScene_Game_1::Load(std::wstring file)
 	//트리거 2 : 전투 트리거
 
 	std::shared_ptr<KTriggerCollider> combat_trigger = std::make_shared<KTriggerCollider>();
-	combat_trigger.get()->Init(m_pContext, KVector2(0.0f, 2.5f), {0,0,3,3});
+	combat_trigger.get()->Init(m_pContext, KVector2(0.0f, 8.0f), {0,0,8,4});
 	m_Trigger_Combat = combat_trigger.get();
+	//m_Trigger_Combat->m_matWorld._42 = 1.0f;
 	m_Trigger_Combat->m_matWorld = m_Trigger_Combat->m_matWorld * s;
 	m_MapObj.push_back(std::shared_ptr<KObject>(combat_trigger));
 	std::shared_ptr<KTriggerCollider> enter_trigger = std::make_shared<KTriggerCollider>();
@@ -298,16 +300,42 @@ bool KScene_Game_1::Load(std::wstring file)
 		m_MapObj.push_back(std::shared_ptr<KObject>(building));
 	}
 #pragma endregion
+
 	//풀 배치
-	std::shared_ptr<KImage> map_grass = std::make_shared<KImage>();
-	map_grass.get()->SetRectDraw({ 0, 0, 32, 28 });
-	map_grass.get()->SetPosition(KVector2(0, 0));
-	if (!map_grass.get()->Init(m_pContext,
-		L"../../data/shader/VS_2D_Map.txt", L"../../data/shader/PS_2D_Map.txt",
-		L"../../data/texture/DS DSi - Pokemon Diamond Pearl - Players House.png", L""))
+	D3DKMatrixIdentity(&t);
+	D3DKMatrixIdentity(&r);
+	D3DKMatrixRotationX(&r, -1 * (3.14f / 6.0f));
+	D3DKMatrixTranslation(&t, 0.0f, 0.0f, -0.3f);
+	for (int i = 0; i < 8; i++)
 	{
-		return false;
+		std::shared_ptr<KImage> map_grass = std::make_shared<KImage>();
+		map_grass.get()->SetRectDraw({ 0, 0, 400, 300 });
+		D3DKMatrixTranslation(&t, i * 0.85f -2.0f, 1.5f, 0.0f);
+		if (!map_grass.get()->Init(m_pContext,
+			L"../../data/shader/VS_2D_Map.txt", L"../../data/shader/PS_2D_Map.txt",
+			L"../../data/texture/grass.png", L""))
+		{
+			return false;
+		}
+		map_grass.get()->m_matWorld = map_grass.get()->m_matWorld * r * t * s;
+		m_MapObj.push_back(std::shared_ptr<KObject>(map_grass));
+
+		for (int j = 0; j < 4; j++)
+		{
+			std::shared_ptr<KImage> map_grass = std::make_shared<KImage>();
+			map_grass.get()->SetRectDraw({ 0, 0, 400, 300});
+			D3DKMatrixTranslation(&t, i * 0.85f - 2.0f, j * 0.85f +1.5f, 0.0f);
+			if (!map_grass.get()->Init(m_pContext,
+				L"../../data/shader/VS_2D_Map.txt", L"../../data/shader/PS_2D_Map.txt",
+				L"../../data/texture/grass.png", L""))
+			{
+				return false;
+			}
+			map_grass.get()->m_matWorld = map_grass.get()->m_matWorld * r * t * s;
+			m_MapObj.push_back(std::shared_ptr<KObject>(map_grass));
+		}
 	}
+	
 
 	//쿼트트리-------------------------------
 	std::shared_ptr<KMapSpace> map_space = std::make_shared<KMapSpace>();
@@ -346,18 +374,15 @@ bool KScene_Game_1::Frame()
 		g_SceneManager.m_Timer += g_fSecPerFrame;
 		if (g_SceneManager.m_Timer > 1.0f)
 		{
-			g_SceneManager.m_BGM->SoundStop();
-			g_SceneManager.m_BGM = g_SoundManager.LoadSound(L"../../data/sound/bgm/Battle! (Wild Pokemon).wav");
-			g_SceneManager.m_BGM->SoundPlay(true);
-			g_SceneManager.m_Timer = 0.0f;
+			
 			g_SceneManager.SetScene(3);
 			return true;
 		}
 	}
-	//집으로 가는 트리거
+	//집으로 가는 트리거 --------------------------------
 	if (m_Trigger_Home->m_bisTrigger)
 	{
-		//m_Fade->m_bFadeIn = true;
+		m_Fade->m_bFadeIn = true;
 		g_SceneManager.m_Player->m_bMove = false;
 		g_SceneManager.m_Player->AutoMove(KVector2(0, 1));
 		g_SceneManager.m_Timer += g_fSecPerFrame;
@@ -371,7 +396,46 @@ bool KScene_Game_1::Frame()
 			return true;
 		}
 	}
+	//전투 트리거 --------------------------------------
+	//랜덤으로 발동하게 한다.
+	//3초에 한번 랜덤 계산을한다.
+	//5.0이니까 확률은 5:5
+	if (m_Trigger_Combat->m_bisTrigger)
+	{
+		g_SceneManager.m_Timer += g_fSecPerFrame;
+		if (g_SceneManager.m_Timer > 3.0f)
+		{
+			float temp = randstep(0.0f, 10.0f);
+			g_SceneManager.m_BGM->SoundStop();
+			g_SceneManager.m_BGM = g_SoundManager.LoadSound(L"../../data/sound/bgm/Battle! (Wild Pokemon).wav");
+			g_SceneManager.m_Timer = 0.0f;
+			if (temp > 5.0f)
+			{
+				m_bCombat = true;
+			}
+		}
+	}
 
+	// 3~10 숫자는 랜덤으로
+	if (m_bCombat)
+	{
+		m_Fade->m_bFadeIn = true;
+		g_SceneManager.m_Player->m_bMove = false;
+		g_SceneManager.m_BGM->SoundPlay(true);
+		if (g_SceneManager.m_Timer > 1.0f)
+		{
+			g_SceneManager.m_Timer = 0.0f;
+			g_SceneManager.m_Player->m_bMove = true;
+			g_SceneManager.SetScene(3);
+			return true;
+		}
+	}
+	if (ImGui::Begin("trigger"))
+	{
+		ImGui::Text("%d", m_Trigger_Combat->m_bisTrigger);
+		ImGui::Text("%d", m_bCombat);
+	}
+	ImGui::End();
 	#pragma region 메뉴 조작
 	//메뉴 조작 캐릭터 이동 불가
 	if (g_InputData.bMenu)
@@ -463,7 +527,8 @@ bool KScene_Game_1::Render()
 		m_MapObj[map]->SetMatrix(&m_MapObj[map]->m_matWorld,
 			&m_Camera.m_matView, &m_Camera.m_matProj);
 	}
-	//플레이어 렌더링
+
+	//플레이어 렌더링 빌보드 행렬
 	// Y축 회전행렬은 _11, _13, _31, _33번 행렬에 회전값이 들어간다
 	// 카메라의 Y축 회전행렬값을 읽어서 역행렬을 만들면 X,Z축이 고정된
 	// Y축 회전 빌보드 행렬을 만들수 있다

@@ -98,9 +98,6 @@
     <ClInclude Include="KCombat.h">
       <Filter>Code\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="KCombatCalculator.h">
-      <Filter>Code\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="KTriggerCollider.h">
       <Filter>Code\Obj</Filter>
     </ClInclude>

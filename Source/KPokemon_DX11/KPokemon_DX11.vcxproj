@@ -149,7 +149,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="KCombatCalculator.h" />
     <ClInclude Include="KCombat.h" />
     <ClInclude Include="KPokemon.h" />
     <ClInclude Include="KScene_Combat.h" />

@@ -5,8 +5,8 @@
 #include "KWrite.h"
 bool KScene_Combat::Load(std::wstring file)
 {
-#pragma region 사용할 모델 생성
-	// 배경
+	#pragma region 사용할 모델 생성
+	// 전투 배경
 	std::shared_ptr<KImage> combat_background(new KImage);
 	combat_background->m_Name = L"combat_background";
 	combat_background->SetRectDraw({ 0,0,g_rtClient.right, g_rtClient.bottom});
@@ -55,20 +55,31 @@ bool KScene_Combat::Load(std::wstring file)
 		return false;
 	}
 	g_UIModelManager.m_list.insert(std::make_pair(L"combat_step", combat_stepimg));
+#pragma endregion
 
 	KUIModel* mystep = g_UIModelManager.GetPtr(L"combat_step")->Clone();
 	mystep->SetRectDraw({ 0,0,128 * 4, 40 * 4 });
-	mystep->SetPosition(KVector2(200, g_rtClient.bottom-150));
+	mystep->SetPosition(KVector2(200, g_rtClient.bottom - 150));
 	mystep->UpdateData();
 	KUIModel* enemystep = g_UIModelManager.GetPtr(L"combat_step")->Clone();
-	enemystep->SetPosition(KVector2(g_rtClient.right-200, g_rtClient.bottom / 2));
+	enemystep->SetPosition(KVector2(g_rtClient.right - 200, g_rtClient.bottom / 2));
 	enemystep->UpdateData();
 	//발판
 	m_UIObj.push_back(std::shared_ptr<KObject>(mystep));
 	m_UIObj.push_back(std::shared_ptr<KObject>(enemystep));
 	m_UIObj.push_back(std::shared_ptr<KObject>(dialog_background));
-	
-#pragma endregion
+
+	//effect---------------------------------------------
+	m_EffectPlayer = std::make_shared<KSpriteEffect>();
+	g_SpriteManager.Load(L"../../data/texture/Sprite.txt");
+	m_EffectPlayer.get()->m_pSprite = g_SpriteManager.GetPtr(L"rtThrowPlayer");
+
+	m_EffectPlayer.get()->SetPosition(KVector2(0, 0));
+	m_EffectPlayer.get()->SetRectDraw({ 0, 0, 1, 2 });
+	m_EffectPlayer.get()->SetRectSource(m_EffectPlayer.get()->m_pSprite->m_anim_array[0]);
+	m_EffectPlayer.get()-> Init(m_pContext, L"../../data/shader/VS_2D.txt", L"../../data/shader/PS_2D.txt",
+		L"../../data/texture/player_lucas.png", L"../../data/texture/player_lucas_mask.png");
+	m_EffectPlayer.get()->m_bEnd = true;
 
 	return true;
 }
@@ -81,7 +92,6 @@ bool KScene_Combat::Init(ID3D11DeviceContext* context)
 	m_text_dialog = L"우왓! 야생 찌르꼬가 돌진해왔다!";
 	//현재 씬 열거형 타입 지정
 	m_SceneID = S_COMBAT;
-	std::shared_ptr<KCombat> combat;
 	//combat->Init();
 	return true;
 }
@@ -93,8 +103,17 @@ bool KScene_Combat::Frame()
 	if (g_SceneManager.m_Timer >= 2)
 	{
 		m_text_dialog = L"가랏! 팽도리!";
+		g_SceneManager.m_Timer = 0;
+	}
+
+	if (g_InputData.bMenu)
+	{
+		m_EffectPlayer.get()->m_bEnd = false;
+		m_EffectPlayer.get()->Reset();
+		m_EffectPlayer.get()->SetRectSource(m_EffectPlayer.get()->m_pSprite->m_anim_array[0]);
 	}
 	KScene::Frame();
+	m_EffectPlayer.get()->Frame();
 	return true;
 }
 
@@ -102,6 +121,7 @@ bool KScene_Combat::Render()
 {
 
 	KScene::Render();
+    m_EffectPlayer.get()->Render(m_pContext);
 
 	//대화창텍스트 : 무조건 상위에 있어야하기 때문에 나중에 렌더함
 	RECT  rt = { 25, g_rtClient.bottom - 125 , g_rtClient.right, g_rtClient.bottom};

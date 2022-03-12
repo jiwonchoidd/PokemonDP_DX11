@@ -9,6 +9,7 @@ public:
 	float	    m_Timer;
 	float	    m_Change_Time;
     KVector4    m_Color;
+    bool        m_bEnd;
 public:
     bool Init(ID3D11DeviceContext* context, std::wstring vs,
         std::wstring ps, std::wstring tex = nullptr, std::wstring mask = nullptr);
