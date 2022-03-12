@@ -1,0 +1,45 @@
+﻿  KCombat.cpp
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KCombatCalculator.h(12,11): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KCombatCalculator.h(13,11): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KCombat.cpp(26,24): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  KPokemon.cpp
+  KScene_Combat.cpp
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KScene_Combat.cpp(13,79): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KScene_Combat.cpp(13,58): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KScene_Combat.cpp(31,81): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KScene_Combat.cpp(31,59): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KScene_Combat.cpp(46,79): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KScene_Combat.cpp(46,56): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KScene_Combat.cpp(61,53): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KScene_Combat.cpp(64,74): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KScene_Combat.cpp(64,50): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  KScene_Game_1.cpp
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KScene_Game_1.cpp(79,56): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KScene_Game_1.cpp(79,38): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KScene_Game_1.cpp(279,42): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KScene_Game_1.cpp(384,61): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  KSpriteEffect.cpp
+  KMapSpace.cpp
+  KNpc2D.cpp
+  KPlayer2D.cpp
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KPlayer2D.cpp(48,18): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KPlayer2D.cpp(62,18): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KPlayer2D.cpp(75,18): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KPlayer2D.cpp(88,18): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KPlayer2D.cpp(155,17): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KPlayer2D.cpp(159,17): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KPlayer2D.cpp(163,17): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KPlayer2D.cpp(167,17): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  KSceneManager.cpp
+  KScene_Game_0.cpp
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KScene_Game_0.cpp(66,57): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KScene_Game_0.cpp(66,39): warning C4244: '인수': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\Source\PokemonDP_DX11_DD\KScene_Game_0.cpp(259,61): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  KTriggerCollider.cpp
+  Sample.cpp
+  KScene_Intro.cpp
+  코드를 생성하고 있습니다...
+DirectXTK.lib(DDSTextureLoader.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTK.lib(DDSTextureLoader.obj)' 또는 'E:\github\PokemonDP_DX11Proj_DD\Export\PokemonDP_DD\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTK.lib(pch.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTK.lib(pch.obj)' 또는 'E:\github\PokemonDP_DX11Proj_DD\Export\PokemonDP_DD\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTK.lib(WICTextureLoader.obj) : warning LNK4099: '' PDB를 'DirectXTK.lib(WICTextureLoader.obj)' 또는 ''에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+  PokemonDP_DX11_DD.vcxproj -> E:\github\PokemonDP_DX11Proj_DD\Export\PokemonDP_DD\PokemonDP_DX11_DD.exe

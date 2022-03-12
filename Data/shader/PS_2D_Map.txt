@@ -1,0 +1,18 @@
+Texture2D		g_txColor : register(t0);
+SamplerState	g_Sample : register(s0);
+
+struct VS_OUTPUT
+{
+	float4 p : SV_POSITION;
+	float3 n : NORMAL;
+	float4 c : COLOR0;
+	float2 t : TEXCOORD0;
+};
+
+float4 PS(VS_OUTPUT input) : SV_TARGET
+{	
+	//텍스처에서 t좌표에 해당하는 컬러값(픽셀) 반환
+	float4 color = g_txColor.Sample(g_Sample, input.t);
+	float4 final = color;
+	return final;
+}

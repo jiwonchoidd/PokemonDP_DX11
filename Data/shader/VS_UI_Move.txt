@@ -1,0 +1,26 @@
+struct VS_OUTPUT
+{
+	float4 p : SV_POSITION;
+	float3 n : NORMAL;
+	float4 c : COLOR0;
+	float2 t : TEXCOORD0;
+};
+
+cbuffer CBuf
+{
+	matrix g_matWorld : packoffset(c0);
+	matrix g_matView : packoffset(c4);
+	matrix g_matProj : packoffset(c8);
+	matrix g_matNormal : packoffset(c12);
+	float4 g_color : packoffset(c16);
+	float4 g_value : packoffset(c17); 
+};
+
+VS_OUTPUT VS(float4 p: POSITION, float3 n : NORMAL, float4 c : COLOR, float2 t : TEXTURE) 
+{
+	VS_OUTPUT pOut = (VS_OUTPUT)0;
+	pOut.p = float4(p.x,p.y,0.0f,1.0f);
+	pOut.t = t + float2(g_value.x*2.0f,0);
+	pOut.c = c;
+	return pOut;
+}

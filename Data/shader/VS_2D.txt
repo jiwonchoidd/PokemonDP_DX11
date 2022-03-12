@@ -1,0 +1,36 @@
+//HLSL->c언와 유사하다.
+//정점쉐이더는 반드시 float4:SV_POSITION(레지스터)로 반환한다.
+//정점버퍼의 정점1개마다 호출된다.
+//POSITION(시멘틱:의미구조)
+
+cbuffer CBuf
+{
+	matrix g_matWorld : packoffset(c0);
+	matrix g_matView : packoffset(c4);
+	matrix g_matProj : packoffset(c8);
+	matrix g_matNormal : packoffset(c12);
+	float4 g_light : packoffset(c16);
+	float4 g_value : packoffset(c17); 
+};
+
+struct VS_OUTPUT
+{
+	float4 p : SV_POSITION;
+	float3 n : NORMAL;
+	float4 c : COLOR0;
+	float2 t : TEXCOORD0;
+};
+
+VS_OUTPUT VS(float3 p: POSITION, float3 n : NORMAL, float4 c : COLOR, float2 t : TEXTURE) 
+{
+	VS_OUTPUT pOut = (VS_OUTPUT)0;
+	float4 vLocal = float4(p,1.0f);
+	float4 vWorld = mul(vLocal, g_matWorld);
+	float4 vView = mul(vWorld, g_matView);
+	float4 vProj = mul(vView, g_matProj);
+	pOut.p = vProj;
+	pOut.n = n;
+	pOut.c = c;
+	pOut.t = t;
+	return pOut;
+}
