@@ -70,9 +70,22 @@ bool KWrite::Init()
          L"ko-kr",//L"en-us",//L"ko-kr",
          &m_pTextGame40
      );
-     m_pTextGame40->SetLineSpacing(DWRITE_LINE_SPACING_METHOD_UNIFORM, 50.0f, 40.0f);
-     m_pTextGame40_Space->SetLineSpacing(DWRITE_LINE_SPACING_METHOD_UNIFORM, 59.0f, 40.0f);
     if (FAILED(hr)) return false;
+    hr = m_pdWriteFactory->CreateTextFormat(
+        L"PFStardust",
+        NULL,
+        DWRITE_FONT_WEIGHT_BOLD,
+        DWRITE_FONT_STYLE_NORMAL,
+        DWRITE_FONT_STRETCH_EXTRA_CONDENSED,
+        25,
+        L"ko-kr",//L"en-us",//L"ko-kr",
+        &m_pTextGame25
+    );
+    if (FAILED(hr)) return false;
+
+    m_pTextGame25->SetLineSpacing(DWRITE_LINE_SPACING_METHOD_UNIFORM, 50.0f, 40.0f);
+    m_pTextGame40->SetLineSpacing(DWRITE_LINE_SPACING_METHOD_UNIFORM, 50.0f, 40.0f);
+     m_pTextGame40_Space->SetLineSpacing(DWRITE_LINE_SPACING_METHOD_UNIFORM, 59.0f, 40.0f);
     return true;
 }
 
@@ -138,6 +151,7 @@ bool KWrite::Release()
     if (m_pTextFormat) m_pTextFormat->Release();
     if (m_pTextBrush) m_pTextBrush->Release();
     if (m_pTextGame40)m_pTextGame40->Release();
+    if (m_pTextGame25)m_pTextGame25->Release();
     if (m_pTextGame40_Space)m_pTextGame40_Space->Release();
     //ex버젼은 자동으로 해제해준다
     RemoveFontResourceEx(L"../../data/font/PFStardust.ttf", FR_PRIVATE, 0);

@@ -368,17 +368,7 @@ bool KScene_Game_1::Frame()
 	g_SceneManager.m_Player->Frame();
 	//카메라 이동
 	m_Camera.Follow2DPos(&g_SceneManager.m_Player->m_pos, {0, 20});
-	//디버깅용 씬이동
-	if (g_InputData.bAKey)
-	{
-		g_SceneManager.m_Timer += g_fSecPerFrame;
-		if (g_SceneManager.m_Timer > 1.0f)
-		{
-			
-			g_SceneManager.SetScene(3);
-			return true;
-		}
-	}
+
 	//집으로 가는 트리거 --------------------------------
 	if (m_Trigger_Home->m_bisTrigger)
 	{
@@ -430,12 +420,7 @@ bool KScene_Game_1::Frame()
 			return true;
 		}
 	}
-	if (ImGui::Begin("trigger"))
-	{
-		ImGui::Text("%d", m_Trigger_Combat->m_bisTrigger);
-		ImGui::Text("%d", m_bCombat);
-	}
-	ImGui::End();
+
 	#pragma region 메뉴 조작
 	//메뉴 조작 캐릭터 이동 불가
 	if (g_InputData.bMenu)

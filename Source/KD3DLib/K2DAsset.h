@@ -9,17 +9,21 @@ public:
 	bool				m_bFadeIn = false;
 	bool				m_bFadeOut = false;
 	bool				m_bMoveImg = false;
+	bool				m_bAddPos = false;
 	float				m_Timer;
 public:
 	RECT				m_rtSource;
 	RECT				m_rtDraw;
+	void				MoveIMG_Start(KVector2 pos);
 	virtual	void		RegisterOverlap();
 	virtual void		ObjectOverlap(KCollider* pObj, DWORD dwState);
 	virtual void		SelectOverlap(KCollider* pObj, DWORD dwState);
 public:
 	virtual void		SetRectSource(RECT rt);
 	virtual void		SetRectDraw(RECT rt);
+	virtual void		SetRectDraw(float width, float height);
 	virtual void		AddPosition(KVector2 vPos);
+	virtual void		AddPosition_UI(KVector2 vPos);
 	virtual void		SetPosition(KVector2 vPos);
 	virtual void		UpdateRectDraw(RECT rt);
 	virtual bool		CreateObject_Mask(std::wstring vsFile,

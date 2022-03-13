@@ -1,5 +1,10 @@
 #include "K2DAsset.h"
 #include "KObjectManager.h"
+void K2DAsset::MoveIMG_Start(KVector2 pos)
+{
+		m_bAddPos = true;
+		m_dir = pos;
+}
 void K2DAsset::RegisterOverlap()
 {
 	g_ObjManager.AddCollisionExecute(this,
@@ -41,6 +46,14 @@ void K2DAsset::SetRectDraw(RECT rt)
 	m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
 }
 
+void K2DAsset::SetRectDraw(float width, float height)
+{
+	m_rtDraw = {0,0,(int)width,(int)height};
+	m_rtSize.width = width;
+	m_rtSize.height = height;
+	m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
+}
+
 void K2DAsset::UpdateRectDraw(RECT rt)
 {
 	m_rtSize.width = rt.right;
@@ -69,6 +82,21 @@ void K2DAsset::AddPosition(KVector2 vPos)
 	m_pos = { m_matWorld._41, m_matWorld._42 };
 	m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
 	SetUVcoord(m_VertexList);
+	if (m_pContext != nullptr)
+	{
+		m_pContext->UpdateSubresource(m_pVertexBuffer.Get(), 0, NULL,
+			&m_VertexList.at(0), 0, 0);
+	}
+}
+
+void K2DAsset::AddPosition_UI(KVector2 vPos)
+{
+	m_matWorld._41 += vPos.x;
+	m_matWorld._42 += vPos.y;
+	m_pos = { m_matWorld._41, m_matWorld._42 };
+	m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
+	SetVertexData();
+	SetIndexData();
 	if (m_pContext != nullptr)
 	{
 		m_pContext->UpdateSubresource(m_pVertexBuffer.Get(), 0, NULL,

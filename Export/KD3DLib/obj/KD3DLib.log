@@ -1,4 +1,14 @@
-﻿  KD3DLib.vcxproj -> E:\github\PokemonDP_DX11Proj_DD\PokemonDP_DX11\Export\KD3DLib\KD3DLib.lib
+﻿  KWrite.cpp
+E:\github\PokemonDP_DX11Proj_DD\PokemonDP_DX11\Source\KD3DLib\KWrite.cpp(11,18): warning C4244: '=': 'UINT'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\PokemonDP_DX11\Source\KD3DLib\KWrite.cpp(12,18): warning C4244: '=': 'UINT'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\PokemonDP_DX11\Source\KD3DLib\KWrite.cpp(109,69): warning C4244: '인수': 'LONG'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\PokemonDP_DX11\Source\KD3DLib\KWrite.cpp(109,59): warning C4244: '인수': 'LONG'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\PokemonDP_DX11\Source\KD3DLib\KWrite.cpp(109,51): warning C4244: '인수': 'LONG'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\PokemonDP_DX11\Source\KD3DLib\KWrite.cpp(109,42): warning C4244: '인수': 'LONG'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\PokemonDP_DX11\Source\KD3DLib\KWrite.cpp(114,50): warning C4267: '인수': 'size_t'에서 'UINT32'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\PokemonDP_DX11\Source\KD3DLib\KWrite.cpp(119,48): warning C4267: '인수': 'size_t'에서 'UINT32'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\PokemonDP_DX11Proj_DD\PokemonDP_DX11\Source\KD3DLib\KWrite.cpp(136,34): warning C4244: '인수': 'float'에서 'const unsigned __int64'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  KD3DLib.vcxproj -> E:\github\PokemonDP_DX11Proj_DD\PokemonDP_DX11\Export\KD3DLib\KD3DLib.lib
           1개 파일이 복사되었습니다.
   ImGuiManager.h
   K2DAsset.h

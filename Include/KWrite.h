@@ -17,6 +17,7 @@ public:
 	ID2D1RenderTarget*	m_pRT; // 3d ¿¬µ¿
 	IDWriteTextFormat*	m_pTextFormat;
 	IDWriteTextFormat*  m_pTextGame40;
+	IDWriteTextFormat*	m_pTextGame25;
 	IDWriteTextFormat*	m_pTextGame40_Space;
 	ID2D1SolidColorBrush* m_pTextBrush;
 public:

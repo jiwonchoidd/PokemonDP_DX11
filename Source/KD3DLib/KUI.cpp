@@ -152,6 +152,7 @@ bool KImage::Frame()
 	if (m_bFadeIn)	FadeIn();
 	if (m_bFadeOut)	FadeOut();
 	if (m_bMoveImg) MoveIMG();
+	if (m_bAddPos) MoveIMG_pos();
 	m_cbData.vLightDir.x = m_fAlpha;
 	m_cbData.vLightDir.y = m_fAlpha;
 	m_cbData.vLightDir.z = m_fAlpha;
@@ -189,6 +190,16 @@ void KImage::MoveIMG()
 	{
 		m_cbData.vValue.x += g_fSecPerFrame;
 	}
+}
+
+void KImage::MoveIMG_pos()
+{
+	AddPosition(m_dir*g_fSecPerFrame);
+	if (m_Timer > 1.5f)
+	{
+		m_bAddPos = false;
+	}
+	m_Timer += g_fSecPerFrame;
 }
 
 void KImage::SelectOverlap(KCollider* pObj, DWORD dwState)

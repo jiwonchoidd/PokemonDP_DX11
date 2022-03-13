@@ -16,12 +16,15 @@ class KPokemon :public KImage
 {
 public:
     PokemonInfo* m_pinfo;
+    bool         m_bMine;
+    bool         m_bAnimation;
+    bool         m_bAttackMove;
+    float        m_Timer;
+    KSound*      m_Sound_Cries;
 public:
     bool Init(ID3D11DeviceContext* context, PokemonInfo* info, bool ismine=false);
     bool Frame();
     bool Render(ID3D11DeviceContext* pContext);
-    virtual void	ObjectOverlap(KCollider* pObj, DWORD dwState);
-    virtual void	SelectOverlap(KCollider* pObj, DWORD dwState);
 public:
     KPokemon();
     ~KPokemon();

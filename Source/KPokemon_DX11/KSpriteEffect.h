@@ -18,7 +18,5 @@ public:
     bool Release()override;
 public:
     void    Reset();
-    virtual void	ObjectOverlap(KCollider* pObj, DWORD dwState);
-    virtual void	SelectOverlap(KCollider* pObj, DWORD dwState);
 };
 

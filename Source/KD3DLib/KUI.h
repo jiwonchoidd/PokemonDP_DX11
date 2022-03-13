@@ -76,10 +76,12 @@ private:
     }
 public:
     bool    m_bImgHover = false;
+    float   m_ftime = 0.0f;
 public:  
     virtual bool    Frame()override;
     virtual void    FadeIn();
     virtual void    MoveIMG();
+    virtual void    MoveIMG_pos();
     virtual void    FadeOut();
     virtual void	SelectOverlap(KCollider* pObj, DWORD dwState) override;
 };

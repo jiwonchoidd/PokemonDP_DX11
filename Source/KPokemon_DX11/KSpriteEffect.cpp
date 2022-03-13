@@ -1,5 +1,4 @@
 #include "KSpriteEffect.h"
-#include "ImGuiManager.h"
 bool KSpriteEffect::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring ps, std::wstring tex, std::wstring mask)
 {
 	m_pContext = context;
@@ -7,7 +6,8 @@ bool KSpriteEffect::Init(ID3D11DeviceContext* context, std::wstring vs, std::wst
 	m_Timer=0.0f;
 	m_bEnd = false;
 	m_Color = { 1,1,1,1 };
-	KObject::CreateObject(vs,ps,tex,mask);
+	m_cbData.vLightDir = m_Color;
+	K2DAsset::CreateObject_Mask(vs,ps,tex,mask);
 	return true;
 }
 
@@ -64,10 +64,3 @@ void KSpriteEffect::Reset()
 	m_Timer = 0.0f;
 }
 
-void KSpriteEffect::ObjectOverlap(KCollider* pObj, DWORD dwState)
-{
-}
-
-void KSpriteEffect::SelectOverlap(KCollider* pObj, DWORD dwState)
-{
-}

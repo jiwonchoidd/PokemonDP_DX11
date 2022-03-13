@@ -4,12 +4,7 @@ bool KSceneManager::Init(ID3D11DeviceContext* context)
 {
 	m_pContext = context;
 
-	//첫번째 씬은 인트로 설정한다. 
-	m_pCurrentScene = new KScene_Combat;
-	m_CurrentScene_Index = S_COMBAT;
-	m_pCurrentScene->Init(m_pContext);
-	m_pCurrentScene->Load(L"test");
-
+	
 	//캐릭터는 하나의 객체로 갖고 있기로 함
 	m_Player = new KPlayer2D();
 	m_Player->SetRectDraw({ 0, 0, 3, 4 });
@@ -23,6 +18,24 @@ bool KSceneManager::Init(ID3D11DeviceContext* context)
 	{
 		return false;
 	}
+	//-인위적으로. 포켓몬 인벤토리에 추가한다
+	PokemonInfo temp;
+	temp.hp = 100;
+	temp.mon_height = 1.0f;
+	temp.mon_weight = 1.0f;
+	temp.mon_level = 1;
+	temp.mon_rect = { 1621, 34, 79, 79 };
+	temp.sex = true;
+	temp.type = 0;
+	temp.skill = { 0 };
+	m_Player->m_inven.poketmon_list.push_back(temp);
+
+	//첫번째 씬은 인트로 설정한다. 
+	m_pCurrentScene = new KScene_Combat;
+	m_CurrentScene_Index = S_COMBAT;
+	m_pCurrentScene->Init(m_pContext);
+	m_pCurrentScene->Load(L"test");
+
 	return true;
 }
 
