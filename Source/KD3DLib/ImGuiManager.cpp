@@ -7,7 +7,13 @@ void ImGuiManager::Frame()
         ImGui_ImplDX11_NewFrame();
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
+        if (!m_bOneFrame)
+        {
+            m_bImguiEnable = false;
+        }
+        m_bOneFrame = true;
     }
+   
 }
 void ImGuiManager::Render()
 {
@@ -39,5 +45,4 @@ ImGuiManager::ImGuiManager()
 ImGuiManager::~ImGuiManager()
 {
     ImGui::DestroyContext();
-
 }

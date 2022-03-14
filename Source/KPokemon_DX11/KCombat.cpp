@@ -1,6 +1,7 @@
 #include "KCombat.h"
 #include "KUI.h"
 #include "KWrite.h"
+#include "ImGuiManager.h"
 //적 포켓몬을 담당함
 //플레이어 포켓몬 레벨에 맞는 적당한 
 //포켓몬 레벨을 가진 몬스터로
@@ -83,12 +84,12 @@ bool KCombat::Init(ID3D11DeviceContext* context, KPlayer2D* player, int id)
 		return false;
 	}
 	//체력바 
-	KImage* my_hp_bar = new KImage();
-	KImage* enemy_hp_bar = new KImage();
+	KImage* my_hp_bar = new KSlider();
+	KImage* enemy_hp_bar = new KSlider();
 	my_hp_bar->m_Name = L"bar1";
 	my_hp_bar->SetRectDraw(0.25f, 0.1f);
 	my_hp_bar->SetRectSource({ 137,11,50,14 });
-	my_hp_bar->SetPosition(KVector2(m_my_Health->m_pos.x+ 0.13f, m_my_Health->m_pos.y-0.05f));
+	my_hp_bar->SetPosition(KVector2(m_my_Health->m_pos.x - 0.002f, m_my_Health->m_pos.y-0.05f));
 	my_hp_bar->SetCollisionType(KCollisionType::Ignore, KSelectType::Select_Ignore);
 	my_hp_bar->m_rtOffset = { 30, 30, 30, 30 };
 	if (!my_hp_bar->Init(m_pContext,
@@ -102,7 +103,7 @@ bool KCombat::Init(ID3D11DeviceContext* context, KPlayer2D* player, int id)
 	enemy_hp_bar->m_Name = L"bar2";
 	enemy_hp_bar->SetRectDraw(0.25f, 0.1f);
 	enemy_hp_bar->SetRectSource({ 137,11,50,14 });
-	enemy_hp_bar->SetPosition(KVector2(m_enemy_Health->m_pos.x+ 0.065f, m_enemy_Health->m_pos.y-0.09f));
+	enemy_hp_bar->SetPosition(KVector2(m_enemy_Health->m_pos.x- 0.05f, m_enemy_Health->m_pos.y-0.09f));
 	enemy_hp_bar->SetCollisionType(KCollisionType::Ignore, KSelectType::Select_Ignore);
 	enemy_hp_bar->m_rtOffset = { 30, 30, 30, 30 };
 	if (!enemy_hp_bar->Init(m_pContext,
@@ -127,10 +128,21 @@ bool KCombat::Frame()
 	m_enemy_Health.get()->Frame();
 	m_enemy_Health.get()->m_pParent->Frame();
 
-	//health bar
-	KImage* heath_bar = static_cast<KImage*>(m_my_Health.get()->m_pParent);
-	heath_bar->SetRectDraw(0.25f *(m_mypoke.m_pinfo->hp/ 100), heath_bar->m_rtSize.height);
-	heath_bar->AddPosition_UI(KVector2(0,0));
+	//디버깅
+	if (ImGui::Begin(u8"체력"))
+	{
+		ImGui::Text("my %d", m_mypoke.m_pinfo->hp);
+		ImGui::Text("oppo %d", m_enemypoke.m_pinfo->hp);
+	}
+	ImGui::End();
+
+	//health bar 체력바
+	KSlider* heath_bar1 = static_cast<KSlider*>(m_my_Health.get()->m_pParent);
+	KSlider* heath_bar2 = static_cast<KSlider*>(m_enemy_Health.get()->m_pParent);
+	heath_bar1->m_slider_value = (float)m_mypoke.m_pinfo->hp / 100;
+	heath_bar2->m_slider_value = (float)m_enemypoke.m_pinfo->hp / 100;
+	heath_bar1->Frame();
+	heath_bar2->Frame();
 	return true;
 }
 

@@ -82,10 +82,21 @@ bool KWrite::Init()
         &m_pTextGame25
     );
     if (FAILED(hr)) return false;
-
+    hr = m_pdWriteFactory->CreateTextFormat(
+        L"PFStardust",
+        NULL,
+        DWRITE_FONT_WEIGHT_BOLD,
+        DWRITE_FONT_STYLE_NORMAL,
+        DWRITE_FONT_STRETCH_EXTRA_CONDENSED,
+        10,
+        L"ko-kr",//L"en-us",//L"ko-kr",
+        &m_pTextGame10
+    );
+    if (FAILED(hr)) return false;
+    m_pTextGame10->SetLineSpacing(DWRITE_LINE_SPACING_METHOD_UNIFORM, 50.0f, 40.0f);
     m_pTextGame25->SetLineSpacing(DWRITE_LINE_SPACING_METHOD_UNIFORM, 50.0f, 40.0f);
     m_pTextGame40->SetLineSpacing(DWRITE_LINE_SPACING_METHOD_UNIFORM, 50.0f, 40.0f);
-     m_pTextGame40_Space->SetLineSpacing(DWRITE_LINE_SPACING_METHOD_UNIFORM, 59.0f, 40.0f);
+    m_pTextGame40_Space->SetLineSpacing(DWRITE_LINE_SPACING_METHOD_UNIFORM, 59.0f, 40.0f);
     return true;
 }
 
@@ -135,7 +146,7 @@ bool KWrite::RenderText_Sequence(RECT rt, std::wstring text, D2D1::ColorF color,
         m_SeqTimer = min(m_SeqTimer, text.length());
         m_SeqText =text.substr(0,m_SeqTimer);
     }
-    RenderText(rt, m_SeqText.c_str(), color);
+    RenderText(rt, m_SeqText.c_str(), color, pTextFormat);
     return true;
 }
 void KWrite::DeleteDeviceResize()

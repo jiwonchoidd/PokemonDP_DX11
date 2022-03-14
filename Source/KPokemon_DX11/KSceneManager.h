@@ -27,6 +27,7 @@ public:
 public:
 	bool	m_bChangeScene;
 	float	m_Timer;
+	bool	m_bTutorial = false;;
 public:
 	KScene* GetScene();
 	bool	SetScene(BYTE index);

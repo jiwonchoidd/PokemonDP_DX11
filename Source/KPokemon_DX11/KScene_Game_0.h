@@ -15,7 +15,8 @@ class KScene_Game_0 : public KScene
 public:
     KCamera                 m_Camera;
     KTriggerCollider*       m_Trigger;
-    KUIModel*                 m_Fade;
+    KUIModel*               m_Fade;
+    KUIModel*               m_dialog_bg;
 public:
     std::shared_ptr<KUIModelComposite> m_Menu;
     bool                               m_bMenu = false;

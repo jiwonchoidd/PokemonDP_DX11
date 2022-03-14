@@ -4,6 +4,7 @@
 class KScene_Intro : public KScene
 {
 public:
+    bool    m_bStart = false;
 public:
     bool    Load(std::wstring file) override;
 public:

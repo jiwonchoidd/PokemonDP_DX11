@@ -160,6 +160,17 @@ bool KImage::Frame()
 	return true;
 }
 
+bool KSlider::Frame()
+{
+	if (m_pre_slider_value!=m_slider_value)
+	{
+		SetRectDraw(m_rtSize.width * (m_slider_value), m_rtSize.height);
+		AddPosition_UI_Right(KVector2(0, 0));
+	}
+	m_pre_slider_value = m_slider_value;
+	return true;
+}
+
 void KImage::FadeIn()
 {
 	m_fAlpha += g_fSecPerFrame;
@@ -343,3 +354,4 @@ void KListCtrlObject::SelectOverlap(KCollider* pObj, DWORD dwState)
 	}
 	m_PreSelectState = m_SelectState;
 }
+

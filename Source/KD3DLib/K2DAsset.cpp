@@ -103,6 +103,25 @@ void K2DAsset::AddPosition_UI(KVector2 vPos)
 			&m_VertexList.at(0), 0, 0);
 	}
 }
+void K2DAsset::AddPosition_UI_Right(KVector2 vPos)
+{
+	m_matWorld._41 += vPos.x;
+	m_matWorld._42 += vPos.y;
+	m_pos = { m_matWorld._41, m_matWorld._42 };
+	m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
+	std::vector<PNCT_VERTEX> list(4);
+	list[0].pos = { m_pos.x, m_pos.y+m_rtSize.height/2};
+	list[1].pos = { m_pos.x +m_rtSize.width, m_pos.y + m_rtSize.height/2 };
+	list[2].pos = { m_pos.x, m_pos.y - m_rtSize.height/2};
+	list[3].pos = { m_pos.x + m_rtSize.width, m_pos.y - m_rtSize.height/2};
+	ConvertIndex(list, m_VertexList);
+	SetIndexData();
+	if (m_pContext != nullptr)
+	{
+		m_pContext->UpdateSubresource(m_pVertexBuffer.Get(), 0, NULL,
+			&m_VertexList.at(0), 0, 0);
+	}
+}
 
 void K2DAsset::SetPosition(KVector2 vPos)
 {

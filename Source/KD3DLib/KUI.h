@@ -86,6 +86,15 @@ public:
     virtual void	SelectOverlap(KCollider* pObj, DWORD dwState) override;
 };
 
+class KSlider : public KImage
+{
+public:
+    float   m_slider_value;
+    float   m_pre_slider_value;
+public:
+    bool    Frame();
+};
+
 class KButton : public KUI
 {
 private:

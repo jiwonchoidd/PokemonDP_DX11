@@ -58,6 +58,24 @@ bool KScene_Game_0::Load(std::wstring file)
 		}
 		g_UIModelManager.m_list.insert(std::make_pair(L"menu_icon", menu_icon));
 
+		//
+		std::shared_ptr<KImage> dialog_background(new KImage);
+		dialog_background->m_Name = L"dialog_background_0";
+		dialog_background->SetRectDraw({ 0,0,g_rtClient.right, g_rtClient.bottom / 4 });
+		dialog_background->SetPosition(KVector2(g_rtClient.right / 2, g_rtClient.bottom - 70));
+		dialog_background->SetCollisionType(KCollisionType::Ignore, KSelectType::Select_Ignore);
+		dialog_background->m_rtOffset = { 30, 30, 30, 30 };
+		if (!dialog_background->Init(m_pContext,
+			L"../../data/shader/VS_UI_0.txt",
+			L"../../data/shader/PS_UI_0.txt",
+			L"../../data/texture/DS DSi - Pokemon Diamond Pearl - Text Boxes.png",
+			L""))
+		{
+			return false;
+		}
+		g_UIModelManager.m_list.insert(std::make_pair(L"dialog_background_0", dialog_background));
+
+
 		//메뉴 버튼-------------------
 		std::shared_ptr<KButton> btn(new KButton);
 		btn->m_Name = L"menu_button";
@@ -190,6 +208,9 @@ bool KScene_Game_0::Load(std::wstring file)
 		g_SceneManager.m_BGM = g_SoundManager.LoadSound(L"../../data/sound/bgm/Twinleaf Town (Day).wav");
 		g_SceneManager.m_BGM->SoundPlay(true);
 	}
+	//대화 상자 
+	KUIModel* dialog_bg = g_UIModelManager.GetPtr(L"dialog_background_0")->Clone();
+	m_dialog_bg = dialog_bg;
 
 	// 캐릭터 씬메니져 전역으로 뺐음
 	D3DKMatrixTranslation(&g_SceneManager.m_Player->m_matWorld, -4, 2, -0.1f);
@@ -369,6 +390,26 @@ bool KScene_Game_0::Render()
 		RECT  rt = { g_rtClient.right-235, 8, g_rtClient.right, g_rtClient.bottom };
 		g_Write->RenderText(rt, L"가방\n지원\n리포트\n설정\n닫는다",
 			D2D1::ColorF(0.2f, 0.2f, 0.3f, 1), g_Write->m_pTextGame40_Space);
+	}
+
+	//처음 튜토리얼
+	if (!g_SceneManager.m_bTutorial)
+	{
+		g_SceneManager.m_Player->m_bMove = false;
+		g_SceneManager.m_Timer += g_fSecPerFrame;
+		if (g_SceneManager.m_Timer > 2.0f)
+		{
+			m_dialog_bg->Render(m_pContext);
+			RECT  rt = { 30, g_rtClient.bottom - 122, g_rtClient.right, g_rtClient.bottom };
+			g_Write->RenderText_Sequence(rt, L"마을 중앙에 있는 잔디에 가보자.\n계속하려면 Z키를 누르세요.",
+				D2D1::ColorF(0.2f, 0.2f, 0.2f, 1), g_Write->m_pTextGame40_Space);
+			if (g_InputData.bZKey)
+			{
+				g_SceneManager.m_bTutorial = true;
+				g_SceneManager.m_Player->m_bMove = true;
+				g_SceneManager.m_Timer = 0.0f;
+			}
+		}
 	}
 	return true;
 }

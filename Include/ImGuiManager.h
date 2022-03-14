@@ -6,6 +6,7 @@ class ImGuiManager
 {
 private:
 	bool m_bImguiEnable = true;
+	bool m_bOneFrame = false;
 public:
 	void OnOffImgui();
 	bool isImguiEnable();

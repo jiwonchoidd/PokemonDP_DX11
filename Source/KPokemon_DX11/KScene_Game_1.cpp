@@ -247,19 +247,20 @@ bool KScene_Game_1::Load(std::wstring file)
 
 	//트리거 1 : 집으로 가는 트리거----------------
 	//트리거 2 : 전투 트리거
-
-	std::shared_ptr<KTriggerCollider> combat_trigger = std::make_shared<KTriggerCollider>();
+	m_Trigger_Home = nullptr;
+	m_Trigger_Combat = nullptr;
+	std::shared_ptr<KTriggerCollider> combat_trigger(new KTriggerCollider);
 	combat_trigger.get()->Init(m_pContext, KVector2(0.0f, 8.0f), {0,0,8,4});
-	m_Trigger_Combat = combat_trigger.get();
-	//m_Trigger_Combat->m_matWorld._42 = 1.0f;
-	m_Trigger_Combat->m_matWorld = m_Trigger_Combat->m_matWorld * s;
+	combat_trigger.get()->m_matWorld = combat_trigger.get()->m_matWorld * s;
 	m_MapObj.push_back(std::shared_ptr<KObject>(combat_trigger));
-	std::shared_ptr<KTriggerCollider> enter_trigger = std::make_shared<KTriggerCollider>();
+
+	std::shared_ptr<KTriggerCollider> enter_trigger(new KTriggerCollider);
 	enter_trigger.get()->Init(m_pContext, KVector2(8.7f, -12.9f), { 0,0,1,1 });
-	m_Trigger_Home = enter_trigger.get();
-	m_Trigger_Home->m_matWorld = m_Trigger_Home->m_matWorld * s;
+	enter_trigger.get()->m_matWorld = enter_trigger.get()->m_matWorld * s;
 	m_MapObj.push_back(std::shared_ptr<KObject>(enter_trigger));
 
+	m_Trigger_Home = enter_trigger.get();
+	m_Trigger_Combat = combat_trigger.get();
 	//건물 배치------------------------------
 	#pragma region 건물 배치 반복문
 	for (int build = 0; build < 4; build++)
@@ -344,7 +345,6 @@ bool KScene_Game_1::Load(std::wstring file)
 	map_space.get()->LoadLeafData(L"../../data/map/map_1.txt");
 	m_MapObj.push_back(std::shared_ptr<KObject>(map_space));
 	return true;
-
 }
 
 bool KScene_Game_1::Init(ID3D11DeviceContext* context)
@@ -353,11 +353,11 @@ bool KScene_Game_1::Init(ID3D11DeviceContext* context)
 	KScene::Init(context);
 	//현재 씬 열거형 타입 지정
 	m_SceneID = S_GAME_1;
-
 	//카메라 초기화
 	m_Camera.Init();
 	m_Camera.CreateViewMatrix(KVector3(0, 0, -28), KVector3(0, 0, 0));
 	m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.18f, (float)g_rtClient.right / (float)g_rtClient.bottom);
+	m_bNewGame = true;
 	return true;
 }
 
@@ -378,30 +378,42 @@ bool KScene_Game_1::Frame()
 		g_SceneManager.m_Timer += g_fSecPerFrame;
 		if (g_SceneManager.m_Timer > 1.0f)
 		{
+			g_SceneManager.SetScene(1);
 			KSound* sound = g_SoundManager.LoadSound(L"../../data/sound/scene.mp3");
 			sound->SoundPlay_Once();
 			g_SceneManager.m_Timer = 0.0f;
 			g_SceneManager.m_Player->m_bMove = true;
-			g_SceneManager.SetScene(1);
 			return true;
+		}
+	}
+	//시작하자마자 야생 포켓몬 다시 잡히는거 방지를 하기 위해 
+	//new game 플래그를 사용함
+	if (m_Trigger_Combat->m_bisTrigger && m_bNewGame)
+	{
+		g_SceneManager.m_Timer += g_fSecPerFrame;
+		m_Trigger_Combat->m_bisTrigger = false;
+		if (g_SceneManager.m_Timer > 2.0f)
+		{
+			m_bNewGame = false;
 		}
 	}
 	//전투 트리거 --------------------------------------
 	//랜덤으로 발동하게 한다.
 	//3초에 한번 랜덤 계산을한다.
 	//5.0이니까 확률은 5:5
-	if (m_Trigger_Combat->m_bisTrigger)
+	else if (m_Trigger_Combat->m_bisTrigger && !m_bNewGame)
 	{
 		g_SceneManager.m_Timer += g_fSecPerFrame;
 		if (g_SceneManager.m_Timer > 3.0f)
 		{
 			float temp = randstep(0.0f, 10.0f);
-			g_SceneManager.m_BGM->SoundStop();
-			g_SceneManager.m_BGM = g_SoundManager.LoadSound(L"../../data/sound/bgm/Battle! (Wild Pokemon).wav");
-			g_SceneManager.m_Timer = 0.0f;
 			if (temp > 5.0f)
 			{
+				g_SceneManager.m_BGM->SoundStop();
+				g_SceneManager.m_BGM = g_SoundManager.LoadSound(L"../../data/sound/bgm/Battle! (Wild Pokemon).wav");
+				g_SceneManager.m_BGM->SoundPlay(true);
 				m_bCombat = true;
+				g_SceneManager.m_Timer = 0.0f;
 			}
 		}
 	}
@@ -409,14 +421,19 @@ bool KScene_Game_1::Frame()
 	// 3~10 숫자는 랜덤으로
 	if (m_bCombat)
 	{
+		if (!m_Trigger_Combat->m_bisTrigger)
+		{
+			m_bCombat = false;
+			return true;
+		}
+		
 		m_Fade->m_bFadeIn = true;
 		g_SceneManager.m_Player->m_bMove = false;
-		g_SceneManager.m_BGM->SoundPlay(true);
 		if (g_SceneManager.m_Timer > 1.0f)
 		{
-			g_SceneManager.m_Timer = 0.0f;
-			g_SceneManager.m_Player->m_bMove = true;
 			g_SceneManager.SetScene(3);
+			g_SceneManager.m_Player->m_bMove = true;
+			g_SceneManager.m_Timer = 0.0f;
 			return true;
 		}
 	}
@@ -537,5 +554,8 @@ bool KScene_Game_1::Release()
 {
 	m_Camera.Release();
 	KScene::Release();
+	//m_Trigger_Combat->m_bisTrigger = false;
+	//m_Trigger_Home->m_bisTrigger = false;;
+	m_bCombat = false;
 	return true;
 }

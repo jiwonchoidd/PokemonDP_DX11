@@ -38,6 +38,7 @@ bool KScene_Combat::Load(std::wstring file)
 	{
 		return false;
 	}
+
 	std::shared_ptr<KImage> select_background(new KImage);
 	select_background->m_Name = L"select_background";
 	select_background->SetRectDraw({ 0,0,g_rtClient.right, g_rtClient.bottom / 4 });
@@ -199,7 +200,7 @@ bool KScene_Combat::Frame()
 			m_EffectPlayer.get()->m_bEnd = false;
 			m_EffectPlayer.get()->Reset();
 			m_EffectPlayer.get()->SetRectSource(m_EffectPlayer.get()->m_pSprite->m_anim_array[0]);
-			m_Combat.m_enemypoke.m_Sound_Cries->SoundPlay_Once();
+			//m_Combat.m_enemypoke.m_Sound_Cries->SoundPlay_Once();
 			m_Event_Intro = true;
 			m_Event_Intro_End = true;
 		}
@@ -278,7 +279,6 @@ bool KScene_Combat::Frame()
 		}
 	}
 
-
 	//°ø°Ý¹ßµ¿
 	if (m_bAttack)
 	{
@@ -288,7 +288,10 @@ bool KScene_Combat::Frame()
 			KSound* attack_sound = g_SoundManager.LoadSound(L"../../data/sound/kick.mp3");
 			attack_sound->SoundPlay_Once();
 			m_Combat.m_mypoke.m_bAttackMove = true;
-			m_Combat.m_enemypoke.m_pinfo->DecHP(50);
+			//·£´ý µ¥¹ÌÁö
+			float random = randstep(0.5f, 1.0f);
+			float damage = 50.0f * random;
+			m_Combat.m_enemypoke.m_pinfo->DecHP(static_cast<int>(damage));
 			m_bAttack = false;
 			m_bAttack_End = true;
 			g_SceneManager.m_Timer = 0.0f;
@@ -304,7 +307,9 @@ bool KScene_Combat::Frame()
 			KSound* attack_sound = g_SoundManager.LoadSound(L"../../data/sound/kick.mp3");
 			attack_sound->SoundPlay_Once();
 			m_Combat.m_enemypoke.m_bAnimation = true;
-			m_Combat.m_mypoke.m_pinfo->DecHP(10);
+			float random = randstep(0.5f, 1.0f);
+			float damage = 30.0f * random;
+			m_Combat.m_mypoke.m_pinfo->DecHP(static_cast<int>(damage));
 			m_Event_Intro_End = true;
 			m_bAttack_End = false;
 			g_SceneManager.m_Timer = 0.0f;
@@ -312,10 +317,24 @@ bool KScene_Combat::Frame()
 	}
 
 	//»ó´ëÀÇ hp°¡ 0º¸´Ù ÀÛ´Ù¸é
-	if (m_Combat.m_enemypoke.m_pinfo->hp < 0)
+	if (m_Combat.m_enemypoke.m_pinfo->hp <= 0)
 	{
 		m_text_dialog = L"Âî¸£²¿¸¦ ¹°¸®ÃÆ´Ù!";
 		m_Combat.m_enemypoke.m_bVisibility = false;
+		g_SceneManager.m_Timer += g_fSecPerFrame;
+		if (g_SceneManager.m_Timer > 4.0f)
+		{
+			KSound* attack_sound = g_SoundManager.LoadSound(L"../../data/sound/scene.mp3");
+			attack_sound->SoundPlay_Once();
+			m_bGameEnd = true;
+			g_SceneManager.m_Timer = 0.0f;
+		}
+	}
+	//ÆØµ¹ÀÌÀÇ hp°¡ 0º¸´Ù ÀÛ´Ù¸é
+	if (m_Combat.m_mypoke.m_pinfo->hp <= 0)
+	{
+		m_text_dialog = L"ÆØµ¹ÀÌ´Â ´«¾ÕÀÌ ±ô±ôÇØÁ³´Ù!";
+		m_Combat.m_mypoke.m_bVisibility = false;
 		g_SceneManager.m_Timer += g_fSecPerFrame;
 		if (g_SceneManager.m_Timer > 4.0f)
 		{
@@ -333,11 +352,13 @@ bool KScene_Combat::Frame()
 		{
 			g_SceneManager.m_Timer = 0.0f;
 			g_SceneManager.SetScene(2);
+			return true;
 		}
 	}
 	m_EffectPlayer.get()->Frame();
 	KScene::Frame();
 	m_Combat.Frame();
+
 	return true;
 }
 

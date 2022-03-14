@@ -12,11 +12,11 @@ class KScene_Game_1 : public KScene
 {
 public:
     KCamera                 m_Camera;
-    KTriggerCollider*       m_Trigger_Home;
-    KTriggerCollider*       m_Trigger_Combat;
+    KTriggerCollider*       m_Trigger_Home = nullptr;
+    KTriggerCollider*       m_Trigger_Combat = nullptr;
     bool                    m_bCombat=false;
     KUIModel*               m_Fade;
-
+    bool                    m_bNewGame = false;
 public:
     std::shared_ptr<KUIModelComposite> m_Menu;
     bool                               m_bMenu = false;

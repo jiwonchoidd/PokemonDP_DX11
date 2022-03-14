@@ -23,9 +23,9 @@ bool	KCore::GameInit()
         (void**)&m_pBackBuffer);
     m_Write.CreateDeviceResources(m_pBackBuffer);
     if (m_pBackBuffer)m_pBackBuffer->Release();
-    
     g_Write = &m_Write;
     Init();
+
     return true;
 }
 bool	KCore::GameFrame() 
@@ -40,27 +40,11 @@ bool	KCore::GameFrame()
     {
         m_bDebugText = !m_bDebugText;
     }
+
     if (g_Input.GetKey(DIK_F2) == KEY_PUSH)
     {
         m_ImGuiManager.OnOffImgui();   
     }
-
-    if (ImGui::Begin(u8"성능 디스플레이"))
-    {
-        ImGui::Text("Average %.3f ms/Frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-        ImGui::Text("res %d, %d", g_rtClient.right, g_rtClient.bottom);
-    }
-    ImGui::End();
-
-    if (ImGui::Begin(u8"인풋 디버거"))
-    {
-        ImGui::Text("iMouseValue %d , %d , %d", g_InputData.iMouseValue[0]
-            , g_InputData.iMouseValue[1], g_InputData.iMouseValue[2]);
-        ImGui::Text("iMousePos %d , %d", g_InputData.iMousePos[0]
-            , g_InputData.iMousePos[1]);
-    }
-    ImGui::End();
-
     Frame();
     return true;
 }
